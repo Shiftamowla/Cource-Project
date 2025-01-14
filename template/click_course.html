@@ -1,0 +1,133 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<!-- Page Title -->
+<div class="page-title" data-aos="fade">
+  <div class="heading">
+    <div class="container">
+      <div class="row d-flex justify-content-center text-center">
+        <div class="col-lg-8">
+          <h1>Courses</h1>
+          <p class="mb-0">Odio et unde deleniti. Deserunt numquam exercitationem. Officiis quo odio sint voluptas consequatur ut a odio voluptatem. Sit dolorum debitis veritatis natus dolores. Quasi ratione sint. Sit quaerat ipsum dolorem.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <nav class="breadcrumbs">
+    <div class="container">
+      <ol>
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li class="current">Course-{{ total_Course }}</li>
+      </ol>
+    </div>
+  </nav>
+</div><!-- End Page Title -->
+
+<!-- Courses Filter Section (Checkboxes) -->
+<section id="course-filter" class="course-filter section py-4">
+  <div class="container">
+    <h3>Filter Courses by Category</h3>
+    <div class="checkbox-group">
+      {% for i in dataa %}
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" value="{{i.category.name}}" id="filter-{{i.id}}">
+        <label class="form-check-label" for="filter-{{i.id}}">
+          {{i.category.name}} ({{i.CourseModel_set.all.count}})
+        </label>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section><!-- /Courses Filter Section -->
+
+<!-- Courses Section -->
+<section id="courses" class="courses section">
+  <div class="container">
+    <div class="row">
+
+      {% for i in data %}  
+      <!-- Course Item 1 -->
+      <div class="col-lg-4 col-md-6 d-flex align-items-stretch course-item" data-category="{{i.category.name}}" data-aos="zoom-in" data-aos-delay="100">
+        <div class="course-item">
+          <img src="/{{i.featured_image}}" class="img-fluid" alt="...">
+          <div class="course-content">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <p class="category">{{i.category.name}}</p>
+              <p class="price">{{i.Price}}</p>
+            </div>
+            <h3><a href="{% url 'course_details' i.id %}">{{i.Course_title}}</a></h3>
+            <p class="description">{{i.description}}</p>
+            <div class="trainer d-flex justify-content-between align-items-center">
+              <div class="trainer-profile d-flex align-items-center">
+                <img src="/{{i.Author.Image}}" class="img-fluid" alt="">
+                <a href="#" class="trainer-link">{{i.Author.name}}</a>
+              </div>
+              <div class="trainer-rank d-flex align-items-center">
+                <i class="bi bi-person user-icon"></i>&nbsp;50
+                &nbsp;&nbsp;
+                <i class="bi bi-heart heart-icon"></i>&nbsp;65
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> <!-- End Course Item-->
+      {% endfor %}
+
+    </div>
+  </div>
+</section><!-- /Courses Section -->
+
+<!-- Icon Cards Section -->
+<section id="icon-cards" class="icon-cards section bg-light py-5">
+  <div class="container">
+    <div class="row text-center">
+      {% for i in category %}
+      <div class="col-md-4">
+        <div class="card border-0 shadow-sm mb-4">
+          <div class="card-body">
+            <div class="icon-container">
+              <i class="fa-solid fa-fire"></i>
+            </div>
+            <h5 class="card-title mt-3">{{i.name}}</h5>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section><!-- /Icon Cards Section -->
+
+<!-- JavaScript for Filtering -->
+<script>
+  // Get the checkboxes and course items
+  const checkboxes = document.querySelectorAll('.form-check-input');
+  const courses = document.querySelectorAll('.course-item');
+
+  // Function to filter courses based on selected categories
+  function filterCourses() {
+    // Get the selected categories
+    const selectedCategories = Array.from(checkboxes)
+      .filter(checkbox => checkbox.checked)
+      .map(checkbox => checkbox.value);
+
+    // Show or hide courses based on the selected categories
+    courses.forEach(course => {
+      const courseCategory = course.getAttribute('data-category');
+      if (selectedCategories.length === 0 || selectedCategories.includes(courseCategory)) {
+        course.style.display = 'block'; // Show course
+      } else {
+        course.style.display = 'none'; // Hide course
+      }
+    });
+  }
+
+  // Add event listeners to checkboxes to trigger the filtering function
+  checkboxes.forEach(checkbox => {
+    checkbox.addEventListener('change', filterCourses);
+  });
+
+  // Initial filtering based on default state of checkboxes
+  filterCourses();
+</script>
+
+{% endblock body %}
