@@ -33,6 +33,7 @@ urlpatterns = [
 
     path('video_courses/<int:id>', video_courses, name='video_courses'),
     path('auther/<int:id>', auther, name='auther'),
+    path('singleauther/<int:id>', singleauther, name='singleauther'),
     path('courses/', courses, name='courses'),
     path('course_details/<int:id>', course_details, name='course_details'),
 

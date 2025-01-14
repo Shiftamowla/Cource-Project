@@ -45,7 +45,7 @@
               </div>
             </div>
             <div class="member-info text-center">
-              <h4>{{ l.name }}</h4>
+              <h4><a href="{% url 'singleauther' l.id %}" class="trainer-link">{{ l.name }}</h4></a>
               <p>{{ l.about_author }}</p>
             </div>
 

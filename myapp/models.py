@@ -7,12 +7,12 @@ class Custom_user(AbstractUser):
         ('viewer','Viewer')
     ]
 
-    user_type=models.CharField(choices=USER,max_length=100,null=True)
+    usertype=models.CharField(choices=USER,max_length=100,null=True)
     Image=models.ImageField(upload_to='Media/user_Pic',null=True)
 
 
     def  __str__(self):
-        return f"{self.username}-{self.user_type}"
+        return f"{self.username}-{self.usertype}"
     
 class viewerProfileModel(models.Model):
     user=models.OneToOneField(Custom_user,on_delete=models.CASCADE,related_name='viewersProfile', null=True)
@@ -21,7 +21,7 @@ class viewerProfileModel(models.Model):
         return f"{self.user.username}"   
     
 class CreatorProfileModel(models.Model):
-    user = models.OneToOneField(Custom_user, on_delete=models.CASCADE,related_name='creatorProfile')
+    user = models.OneToOneField(Custom_user, on_delete=models.CASCADE,related_name='creatorProfile', null=True)
     
     def __str__(self):
         return f"{self.user.username}"

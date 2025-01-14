@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block body %}
+{% for i in trainer %}
+
+<!-- Page Title -->
+<div class="page-title" data-aos="fade">
+  <div class="heading">
+    <div class="container">
+      <div class="row d-flex justify-content-center text-center">
+        <div class="col-lg-8">
+          <h1>Trainer Details</h1>
+          <p class="mb-0">Hi!! Meet {{ i.name }}, an expert in {{i.field_of_expertise}} with years of hands-on experience. Passionate about teaching, {{ i.Author.name }} has created impactful courses to help you unlock your full potential. Get ready to learn from the best and take your skills to the next level!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <nav class="breadcrumbs">
+    <div class="container">
+      <ol>
+        
+        {% for i in trainer %}
+          
+          
+        <li><a href="index.html">Home</a></li>
+        <li class="current">Author - {{ i.name }}</li>
+        
+        {% endfor %}
+
+      </ol>
+    </div>
+  </nav>
+</div><!-- End Page Title -->
+
+<!-- Author Details Section -->
+<section id="author-details" class="author-details section">
+  <div class="container" data-aos="fade-up">
+    <div class="row">
+      <!-- Author Profile -->
+      <div class="col-lg-4">
+        <div class="author-profile">
+          {% for i in trainer %}
+          <img src="/{{i.Image}}" class="img-fluid rounded-circle" alt="Author Image">
+          <h3>{{ i.name }}</h3>
+          <p class="author-bio">{{ i.about_author }}</p>
+          <div class="author-socials">
+            <a href="{{ i.social_link }}" target="_blank"><i class="bi bi-facebook"></i></a>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+      
+      <!-- Author's Course Details -->
+      <div class="col-lg-8">
+        <h4>About the Trainer</h4>
+        <p>{{ i.detailed_bio }}</p>
+
+          <h5>Experience</h5>
+          <p>{{ i.experience }} years of experience in the field of {{ i.Author.field_of_expertise }}</p>
+
+
+
+          <h5>Location</h5>
+          <p>{{ i.location }}</p>
+
+
+
+          <h5>Contact</h5>
+          <p>{{ i.contact }}</p>
+
+      </div>
+    </div>
+  </div>
+</section><!-- End Author Details Section -->
+{% endfor %}
+
+
+{% endblock body %}

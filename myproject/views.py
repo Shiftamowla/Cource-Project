@@ -70,6 +70,12 @@ def contact(req):
 
     return render (req, 'contact.html')
 
+def singleauther(req,id):
+    trainer=author_profile.objects.filter(id=id)
+
+    return render (req, 'singleauther.html',{ 'trainer':trainer})
+
+
 def course_details(req,id):
     vid=CourseModel.objects.filter(id=id)
     video=Video.objects.filter(id=id).order_by('id')
@@ -116,7 +122,7 @@ def pricing(req):
 
 def trainers(req):
     data=author_profile.objects.all()
-    return render (req, 'trainers.html',{'data':data,'courses':courses})
+    return render (req, 'trainers.html',{'data':data})
 
 def starter_page(req):
 
@@ -126,10 +132,10 @@ def starter_page(req):
 def profile(req):
     current_user=req.user
 
-    data=CreatorProfileModel.objects.filter(user=current_user)
+    da=CreatorProfileModel.objects.filter(user=current_user)
     dataa=viewerProfileModel.objects.filter(user=current_user)
     text={
-        'data':data,
+        'da':da,
         'dataa':dataa,
     }
 
@@ -140,9 +146,9 @@ def update_profile(req,id):
     profile = None
 
     # Determine which profile to edit based on user type
-    if user.user_type == 'viewer':
+    if user.usertype == 'viewer':
         profile = viewerProfileModel.objects.get(user=user)
-    elif user.user_type == 'creator':
+    elif user.usertype == 'creator':
         profile = CreatorProfileModel.objects.get(user=user)
 
     if req.method == 'POST':
@@ -150,14 +156,11 @@ def update_profile(req,id):
         user.email = req.POST.get('email')
         user.first_name = req.POST.get('first_name')
         user.last_name = req.POST.get('last_name')
+        user.Image = req.FILES.get('Image')
+        user.OldImage = req.POST.get('OldImage')
         user.save()
-
-        # Update profile picture only if a new one is uploaded
-
         if req.FILES.get('Image'):
             profile.Image = req.FILES['Image']
-
-        profile.save()  
         return redirect("profile")
 
     return render (req, 'update_profile.html', {'user': user, 'profile': profile})
@@ -215,7 +218,7 @@ def registerpage(req):
     if req.method == 'POST':
         username = req.POST.get("username")
         email = req.POST.get("email")
-        user_type = req.POST.get("usertype")
+        usertype = req.POST.get("usertype")
         password = req.POST.get("password")
         confirm_password = req.POST.get("confirm_password")
 
@@ -228,13 +231,13 @@ def registerpage(req):
             user = Custom_user.objects.create_user(
                 username=username,
                 email=email,
-                user_type=user_type,
+                usertype=usertype,
                 password=password,
             )
-            # Create the appropriate user profile based on user_type
-            if user_type == 'viewer':
+            # Create the appropriate user profile based on usertype
+            if usertype == 'viewer':
                 viewerProfileModel.objects.create(user=user)
-            elif user_type == 'creator':
+            elif usertype == 'creator':
                 CreatorProfileModel.objects.create(user=user)
 
             return redirect("loginpage")
